@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Лекция: аудиоматериалы</title>
+    <!-- Подключаем стили и скрипты Jouele -->
+    <link href="https://cdn.jsdelivr.net/npm/ilyabirman-jouele@latest/dist/jouele.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ilyabirman-jouele@latest/dist/jouele.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; }
+        .player-container { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        h1 { color: #333; }
+    </style>
+</head>
+<body>
+    <h1>Аудиоматериалы для лекции</h1>
+    <p>Используйте плеер ниже для прослушивания.</p>
+
+    <!-- Плеер для первого файла -->
+    <div class="player-container">
+        <h3>Пример звука 1</h3>
+        <a href="843207__kevp888__010a_100111_0149-2_fr_music_holy_mass_la_lucerne.mp3" class="jouele" data-controlslist="nodownload">Воспроизвести</a>
+    </div>
+
+    <!-- Плеер для второго файла -->
+    <div class="player-container">
+        <h3>Пример звука 2</h3>
+        <a href="843464__dmytro_volovnenko__just-play.wav" class="jouele" data-controlslist="nodownload">Воспроизвести</a>
+    </div>
+
+  <!-- Плеер для третьего файла -->
+    <div class="player-container">
+        <h3>Пример звука 3</h3>
+        <a href="843556__kevp888__015a_100111_0223_fr_music_holy_mass_la_lucerne.mp3" class="jouele" data-controlslist="nodownload">Воспроизвести</a>
+    </div>
+
+    <!-- для каждого файла нужно добавлять новые блоки  -->
+
+<script>
+// попытка усложнить простое скачивание файлов
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Отключаем контекстное меню (правую кнопку мыши) на всех аудио-элементах
+    document.querySelectorAll('audio').forEach(function(audioEl) {
+        audioEl.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+    });
+
+    // 2. Запрещаем перетаскивание аудио-элементов (drag-and-drop)
+    document.addEventListener('dragstart', function(e) {
+        if (e.target.tagName === 'AUDIO' || e.target.closest('.jouele')) {
+            e.preventDefault();
+        }
+    });
+
+    // 3. Следим, чтобы атрибут, скрывающий кнопку скачивания, нельзя было легко удалить[citation:2]
+    const audioLinks = document.querySelectorAll('a.jouele');
+    audioLinks.forEach(function(link) {
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === 'controlslist') {
+                    link.setAttribute('controlslist', 'nodownload');
+                }
+            });
+        });
+        observer.observe(link, { attributes: true });
+    });
+});
+</script>
+</body>
+</html>
